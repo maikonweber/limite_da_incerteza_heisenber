@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Experimento do Princípio da Incerteza de Heisenberg</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #canvas {
+      border: 1px solid black;
+      margin-bottom: 20px;
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #summary {
+      font-size: 18px;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+  <h1>Experimento do Princípio da Incerteza de Heisenberg</h1>
+
+  <div id="summary">
+    <h2>Resumo da Teoria</h2>
+    <p>O princípio da incerteza de Heisenberg estabelece que existem limites fundamentais para a precisão com que podemos conhecer certas propriedades de uma partícula quântica. Um dos aspectos mais conhecidos desse princípio é a impossibilidade de medir simultaneamente com precisão a posição e o momento de uma partícula.</p>
+    <p>O princípio do observador, por sua vez, destaca que o ato de observar ou medir uma partícula interfere no seu estado. A simples interação com um sistema quântico pode alterar suas propriedades, impedindo a obtenção de uma medição precisa.</p>
+  </div>
+
+  <canvas id="canvas" width="400" height="400"></canvas>
+  
+  <div id="controls">
+    <button onclick="iniciarExperimento()">Iniciar</button>
+    <button onclick="executarProximoPasso()">Próximo Passo</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    let posicao = width / 2; 
+    let momento = 0; 
+    let deltaT = 0.1; 
+
+    function iniciarExperimento() {
+
+      ctx.clearRect(0, 0, width, height);
+
+  
+      desenharParticula(posicao);
+
+     
+      posicao = width / 2;
+      momento = 0;
+    }
+
+    function executarProximoPasso() {
+     
+      const deltaPosicao = momento * deltaT;
+      const deltaMomento = -posicao * deltaT;
+
+    
+      posicao += deltaPosicao;
+      momento += deltaMomento;
+
+ 
+      const { incertezaPosicao, incertezaMomento } = calcularIncerteza(posicao, momento);
+
+      // Limpar o canvas
+      ctx.clearRect(0, 0, width, height);
+
+     
+      desenharParticula(posicao);
+
+      exibirIncertezas(incertezaPosicao, incertezaMomento);
+    }
+
+    function desenharParticula(posicao) {
+      ctx.beginPath();
+      ctx.arc(posicao, height / 2, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = 'red';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function calcularIncerteza(posicao, momento) {
+      const h = 6.62607015e-34; 
+      const hbar = h / (2 * Math.PI);
+      const incertezaPosicao = Math.sqrt(hbar / (2 * Math.abs(momento)));
+      const incertezaMomento = Math.sqrt(hbar / (2 * Math.abs(posicao)));
+
+      return { incertezaPosicao, incertezaMomento };
+    }
+
+    function exibirIncertezas(incertezaPosicao, incertezaMomento) {
+      const summary = document.getElementById('summary');
+      summary.innerHTML += `<p>Incerteza de Posição: ${incertezaPosicao} m</p>`;
+      summary.innerHTML += `<p>Incerteza de Momento: ${incertezaMomento} kg·m/s</p>`;
+    }
+  </script>
+</body>
+</html>
