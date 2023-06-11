@@ -37,3 +37,6 @@ Lado direito da relação (h/2π): 1.0545718176461565e-34
 A relação de incerteza é satisfeita? true
 
 ## Codigo HTML Trás o mesmo conceito porem o um tentativa de um auxilio visual.
+
+
+Fontes:  https://www.youtube.com/watch?v=OLc_v5-sQeM
